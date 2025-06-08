@@ -19,11 +19,26 @@ fun handleInput(input: String) {
     when(command) {
         "echo" -> println(arguments)
         "type" -> handleTypeCommand(arguments.trim())
-        else -> println("$command: command not found")
+        else -> handleOtherCommand(command, arguments)
     }
 }
 
 val builtInCommands = setOf("type", "echo", "exit")
+val directories = System.getenv("PATH").split(File.pathSeparator)
+val fileSeperator: String = File.separator
+
+
+fun handleOtherCommand(command: String, argumets: String) {
+    for(dir in directories) {
+        if(File("$dir$fileSeperator$command").exists()) {
+            val process = ProcessBuilder(command, * argumets.split(" ").toTypedArray()).inheritIO()
+            process.start().waitFor()
+            return
+        }
+    }
+
+    println("$command $argumets: command not found")
+}
 
 fun handleTypeCommand(args: String) {
 
@@ -32,11 +47,9 @@ fun handleTypeCommand(args: String) {
         return
     }
 
-    val paths = System.getenv("PATH").split(":")
-
-    for(path in paths) {
-        if(File("$path/$args").exists()){
-            println("$args is $path/$args")
+    for(dir in directories) {
+        if(File("$dir$fileSeperator$args").exists()){
+            println("$args is $dir$fileSeperator$args")
             return
         }
     }
