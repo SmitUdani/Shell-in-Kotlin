@@ -1,22 +1,46 @@
+import java.io.File
+
 fun main() {
     while (true) {
         print("$ ")
-        val command = readln()
-        when {
-            command.startsWith("echo") -> println(command.substringAfter("echo "))
-            command.startsWith("type") -> handleTypeCommand(command)
-            command == "exit 0" -> break
-            else -> println("$command: command not found")
-        }
+
+        val input = readln()
+
+        if(input.startsWith("exit")) break
+
+        handleInput(input)
     }
 }
 
-fun handleTypeCommand(command: String) {
-    val subCommand = command.substringAfter("type ")
-    val builtInCommands = setOf("type", "echo", "exit")
+fun handleInput(input: String) {
+    val command = input.substringBefore(" ")
+    val arguments = input.substringAfter(" ")
 
-    if(subCommand !in builtInCommands)
-        println("$subCommand: not found")
+    when(command) {
+        "echo" -> println(arguments)
+        "type" -> handleTypeCommand(arguments.trim())
+        else -> println("$command: command not found")
+    }
+}
 
-    else println("$subCommand is a shell builtin")
+val builtInCommands = setOf("type", "echo", "exit")
+
+fun handleTypeCommand(args: String) {
+
+    if(args in builtInCommands) {
+        println("$args is a shell builtin")
+        return
+    }
+
+    val paths = System.getenv("PATH").split(":")
+
+    for(path in paths) {
+        if(File("$path/$args").exists()){
+            println("$args is $path/$args")
+            return
+        }
+    }
+
+    println("$args: not found")
+
 }
