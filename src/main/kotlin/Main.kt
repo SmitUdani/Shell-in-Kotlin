@@ -37,7 +37,7 @@ fun handleOtherCommand(command: String, argumets: String) {
         }
     }
 
-    println("$command $argumets: command not found")
+    println("$command: command not found")
 }
 
 fun handleTypeCommand(args: String) {
