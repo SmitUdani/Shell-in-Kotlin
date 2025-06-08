@@ -19,11 +19,12 @@ fun handleInput(input: String) {
     when(command) {
         "echo" -> println(arguments)
         "type" -> handleTypeCommand(arguments.trim())
+        "pwd" -> println(System.getProperty("user.dir"))
         else -> handleOtherCommand(command, arguments)
     }
 }
 
-val builtInCommands = setOf("type", "echo", "exit")
+val builtInCommands = setOf("type", "echo", "exit", "pwd")
 val directories = System.getenv("PATH").split(File.pathSeparator)
 val fileSeperator: String = File.separator
 
