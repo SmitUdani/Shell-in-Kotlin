@@ -1,4 +1,5 @@
 import java.io.File
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar
 
 fun main() {
     while (true) {
@@ -14,11 +15,11 @@ fun main() {
 
 fun handleInput(input: String) {
     val command = input.substringBefore(" ")
-    val arguments = input.substringAfter(" ")
+    val arguments = input.substringAfter(" ").trim()
 
     when(command) {
         "echo" -> println(arguments)
-        "type" -> handleTypeCommand(arguments.trim())
+        "type" -> handleTypeCommand(arguments)
         "pwd" -> println(System.getProperty("user.dir"))
         "cd" -> changeDirectory(command, arguments)
         else -> handleOtherCommand(command, arguments)
@@ -29,15 +30,20 @@ val builtInCommands = setOf("type", "echo", "exit", "pwd")
 val directories = System.getenv("PATH").split(File.pathSeparator)
 val fileSeperator: String = File.separator
 
-fun changeDirectory(command: String, argumets: String) {
-    val one = File(System.getProperty("user.dir") + fileSeperator + argumets)
-    val two = File(argumets)
+fun changeDirectory(command: String, arguments: String) {
+    if(arguments == "~") {
+        System.setProperty("user.dir", System.getenv("HOME"))
+        return
+    }
+
+    val one = File(System.getProperty("user.dir") + fileSeperator + arguments)
+    val two = File(arguments)
 
     if(one.isDirectory)
         System.setProperty("user.dir", one.canonicalPath)
     else if(two.isDirectory)
         System.setProperty("user.dir", two.canonicalPath)
-    else println("$command: $argumets: No such file or directory")
+    else println("$command: $arguments: No such file or directory")
 }
 
 
