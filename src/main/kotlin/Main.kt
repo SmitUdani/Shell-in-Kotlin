@@ -20,6 +20,7 @@ fun handleInput(input: String) {
         "echo" -> println(arguments)
         "type" -> handleTypeCommand(arguments.trim())
         "pwd" -> println(System.getProperty("user.dir"))
+        "cd" -> changeDirectory(command, arguments)
         else -> handleOtherCommand(command, arguments)
     }
 }
@@ -27,6 +28,17 @@ fun handleInput(input: String) {
 val builtInCommands = setOf("type", "echo", "exit", "pwd")
 val directories = System.getenv("PATH").split(File.pathSeparator)
 val fileSeperator: String = File.separator
+
+fun changeDirectory(command: String, argumets: String) {
+    val one = File(System.getProperty("user.dir") + fileSeperator + argumets)
+    val two = File(argumets)
+
+    if(one.isDirectory)
+        System.setProperty("user.dir", one.canonicalPath)
+    else if(two.isDirectory)
+        System.setProperty("user.dir", two.canonicalPath)
+    else println("$command: $argumets: No such file or directory")
+}
 
 
 fun handleOtherCommand(command: String, argumets: String) {
