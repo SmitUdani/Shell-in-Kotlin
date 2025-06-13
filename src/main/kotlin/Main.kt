@@ -1,5 +1,4 @@
 import java.io.File
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar
 
 fun main() {
     while (true) {
@@ -18,10 +17,11 @@ fun handleInput(input: String) {
     val arguments = input.substringAfter(" ").trim()
 
     when(command) {
-        "echo" -> println(arguments)
+        "echo" -> echo(arguments)
         "type" -> handleTypeCommand(arguments)
         "pwd" -> println(System.getProperty("user.dir"))
         "cd" -> changeDirectory(command, arguments)
+        "cat" -> cat(arguments)
         else -> handleOtherCommand(command, arguments)
     }
 }
@@ -29,6 +29,15 @@ fun handleInput(input: String) {
 val builtInCommands = setOf("type", "echo", "exit", "pwd")
 val directories = System.getenv("PATH").split(File.pathSeparator)
 val fileSeperator: String = File.separator
+
+fun cat(arguments: String) {
+    val files = arguments.split("'").filter { it.isNotBlank() }
+    println( files.joinToString(separator = "") { File(it).readText(charset = Charsets.UTF_8) } )
+}
+
+fun echo(arguments: String) {
+    println(arguments.replace("'", ""))
+}
 
 fun changeDirectory(command: String, arguments: String) {
     if(arguments == "~") {
