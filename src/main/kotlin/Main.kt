@@ -32,7 +32,7 @@ val fileSeperator: String = File.separator
 
 fun cat(arguments: String) {
     val files = arguments.split("'").filter { it.isNotBlank() }
-    println( files.joinToString(separator = "") { File(it).readText(charset = Charsets.UTF_8) } )
+    print( files.joinToString(separator = " ") { File(it).readText(Charsets.UTF_8) } )
 }
 
 fun echo(arguments: String) {
@@ -43,6 +43,10 @@ fun echo(arguments: String) {
     for(char in arguments) {
         if(char == '\'') {
             flag = 1 - flag
+            if(flag == 0) {
+                if(string.isNotBlank()) res.add(string.toString())
+                string.clear()
+            }
         }
         else if(char == ' ') {
             if(flag == 1) string.append(char)
