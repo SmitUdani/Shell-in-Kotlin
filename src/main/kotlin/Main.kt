@@ -32,7 +32,7 @@ val fileSeperator: String = File.separator
 
 fun cat(arguments: String) {
     val files = arguments.split("'").filter { it.isNotBlank() }
-    print( files.joinToString(separator = " ") { File(it).readText(Charsets.UTF_8) } )
+    print( files.joinToString(separator = "") { File(it).readText(Charsets.UTF_8) } )
 }
 
 fun echo(arguments: String) {
