@@ -36,7 +36,26 @@ fun cat(arguments: String) {
 }
 
 fun echo(arguments: String) {
-    println(arguments.replace("'", ""))
+    val res = mutableListOf<String>()
+    var flag = 0
+    val string = StringBuilder()
+
+    for(char in arguments) {
+        if(char == '\'') {
+            flag = 1 - flag
+        }
+        else if(char == ' ') {
+            if(flag == 1) string.append(char)
+            else {
+                if(string.isNotBlank()) res.add(string.toString())
+                string.clear()
+            }
+        } else string.append(char)
+    }
+
+    if(string.isNotBlank()) res.add(string.toString())
+
+    println(res.joinToString(" ") { it } )
 }
 
 fun changeDirectory(command: String, arguments: String) {
