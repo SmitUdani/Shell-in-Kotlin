@@ -31,31 +31,16 @@ val directories = System.getenv("PATH").split(File.pathSeparator)
 val fileSeperator: String = File.separator
 
 fun cat(arguments: String) {
-    val files = arguments.split("'").filter { it.isNotBlank() }
+    val sep = if(arguments.startsWith("'")) "'" else "\""
+    val files = arguments.split(sep).filter { it.isNotBlank() }
     print( files.joinToString(separator = "") { File(it).readText(Charsets.UTF_8) } )
 }
 
 fun echo(arguments: String) {
-    val res = mutableListOf<String>()
-    var flag = 0
-    val string = StringBuilder()
+    if(arguments.startsWith("'"))
+        println(singleQuotes(arguments))
 
-    for(char in arguments) {
-        if(char == '\'') {
-            flag = 1 - flag
-        }
-        else if(char == ' ') {
-            if(flag == 1) string.append(char)
-            else {
-                if(string.isNotBlank()) res.add(string.toString())
-                string.clear()
-            }
-        } else string.append(char)
-    }
-
-    if(string.isNotBlank()) res.add(string.toString())
-
-    println(res.joinToString(" ") { it } )
+    else println(doubleQuotes(arguments))
 }
 
 fun changeDirectory(command: String, arguments: String) {
