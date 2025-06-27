@@ -8,7 +8,7 @@ fun smartSplit(input: String, separator: Char): String {
 
             if (char == separator) flag = 1 - flag
             else if (char == ' ' && flag == 0 && input[i - 1] == char) { i++; continue }
-            else if (char == '\\') append(input[++i])
+            else if (char == '\\' && separator == '\"') append(input[++i])
             else append(char)
 
             i++
