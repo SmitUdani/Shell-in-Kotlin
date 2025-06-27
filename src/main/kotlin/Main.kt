@@ -37,10 +37,8 @@ fun cat(arguments: String) {
 }
 
 fun echo(arguments: String) {
-    if(arguments.startsWith("'"))
-        println(singleQuotes(arguments))
-
-    else println(doubleQuotes(arguments))
+    val sep = if (arguments.startsWith("'")) '\'' else '"'
+    println(smartSplit(arguments, sep))
 }
 
 fun changeDirectory(command: String, arguments: String) {
