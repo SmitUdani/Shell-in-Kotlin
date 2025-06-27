@@ -37,7 +37,7 @@ fun cat(arguments: String) {
 }
 
 fun echo(arguments: String) {
-    val sep = if (arguments.startsWith("'")) '\'' else '"'
+    val sep = if (arguments.startsWith("'")) '\'' else '\"'
     println(smartSplit(arguments, sep))
 }
 
