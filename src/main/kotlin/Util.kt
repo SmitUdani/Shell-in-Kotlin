@@ -18,8 +18,8 @@ fun parseInput(input: String): List<String> {
         val next = input.getOrNull(i + 1)
 
         when {
-            char == '\'' && !doubleQuote -> doubleQuote = true
-            char == '\"' && !singleQuote -> singleQuote = true
+            char == '\'' && !doubleQuote -> singleQuote = !singleQuote
+            char == '\"' && !singleQuote -> doubleQuote = !doubleQuote
 
             char == '\\' && (doubleQuote || !singleQuote) -> {
                 curr.append(next)
