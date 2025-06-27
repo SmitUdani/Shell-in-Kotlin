@@ -7,7 +7,7 @@ fun smartSplit(input: String, separator: Char): String {
             val char = input[i]
 
             if (char == separator) flag = 1 - flag
-            else if (char == ' ' && flag == 0 && input[i - 1] == char) continue
+            else if (char == ' ' && flag == 0 && input[i - 1] == char) { i++; continue }
             else if (char == '\\') append(input[++i])
             else append(char)
 
