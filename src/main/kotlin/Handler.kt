@@ -35,7 +35,7 @@ fun other(inputList: List<String>) {
 
     if(exePath == null) println("${inputList[0]}: command not found")
 
-    else print(runCommand(inputList, exePath.parentFile))
+    else println(runCommand(inputList, exePath.parentFile))
 }
 
 fun type(arguments: List<String>) {
