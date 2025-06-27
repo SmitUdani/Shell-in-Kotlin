@@ -21,7 +21,12 @@ fun parseInput(input: String): List<String> {
             char == '\'' && !doubleQuote -> singleQuote = !singleQuote
             char == '\"' && !singleQuote -> doubleQuote = !doubleQuote
 
-            char == '\\' && ( ( doubleQuote && (next == '\\' || next == '\"' || next == '$') ) || !singleQuote) -> {
+            char == '\\' && doubleQuote && (next == '\\' || next == '\"' || next == '$') -> {
+                curr.append(next)
+                i++
+            }
+
+            char == '\\' && !doubleQuote && !singleQuote -> {
                 curr.append(next)
                 i++
             }
